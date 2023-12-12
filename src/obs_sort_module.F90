@@ -454,7 +454,10 @@ LOGICAL FUNCTION time_eq ( a , b , date , time, ob_closest_to_target_time )
    !being equal) could conceivably introduce a bias, especially since the time
    !of the merged ob appears to be assigned the current "target time").  
    !INTEGER, PARAMETER               ::time_equal_tolerance_seconds = 300
-   INTEGER, PARAMETER               ::time_equal_tolerance_seconds = 1800
+   !INTEGER, PARAMETER               ::time_equal_tolerance_seconds = 1800
+   !Tyler, set 'time_equal_tolerance_seconds' to 60
+   !INTEGER, PARAMETER               ::time_equal_tolerance_seconds = 1800
+   INTEGER, PARAMETER               ::time_equal_tolerance_seconds = 60
    !BPR END
    
    CHARACTER (LEN=19)               :: target_date , a_date , b_date
@@ -642,12 +645,16 @@ SUBROUTINE check_duplicate_ob ( obs , index , num_obs , total_dups , date , time
 ! foo
 !        IF ( .NOT. ( obs(first)%location .EQ. obs(second)%location ) ) THEN
          IF ( .NOT. loc_eq ( obs(first)%location , obs(second)%location ) ) THEN
+            WRITE(*,*) "Tyler: obs_sort_module.F90, observation locations are &
+                        not equal...cycling obsloop"
             CYCLE obsloop
          END IF
 
          !  If this obs has been merged with another obs or discarded, skip it.
 
          IF ( obs(second)%info%discard ) THEN
+            WRITE(*,*) "Tyler: obs_sort_module.F90, observation has discard &
+                        flag set to True, cycling compare"
             CYCLE compare
          END IF
 
@@ -4338,10 +4345,11 @@ height , pressure , slp_x , temperature , iew , jns , levels , map_projection )
          !  This may be wasted print-out, but it is comforting to see.
 
          IF ( print_out_found_obs ) THEN
-            WRITE ( UNIT = * , FMT = '(A,A,A,A,2F9.3)' ) 'Found Name and ID = ' , &
+            WRITE ( UNIT = * , FMT = '(A,A,A,A,2F9.3,x,A,A14)' ) 'Found Name and ID = ' , &
             TRIM ( obs(obs_num)%location%id ) , ' ' , &
             TRIM ( obs(obs_num)%location%name ) , &
-            obs(obs_num)%location%latitude , obs(obs_num)%location%longitude
+            obs(obs_num)%location%latitude , obs(obs_num)%location%longitude, &
+            ' At time = ',obs(obs_num)%valid_time%date_char
          END IF
       END IF
 

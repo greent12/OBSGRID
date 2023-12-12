@@ -46,6 +46,8 @@ height , iew , jns , map_projection , date , time , fdda_loop )
    END INTERFACE
 
    INTEGER                                          :: i
+
+   WRITE(*,*) "Tyler: proc_obs_sort.F90, Top of subroutine."
    
    !  Ingest the observations.  On return, we get the number of observations
    !  in the data set, as well as the observation data structure all filled
@@ -54,11 +56,13 @@ height , iew , jns , map_projection , date , time , fdda_loop )
    !  all read at this point.  The data is vertically sorted with this
    !  call.
 
+   WRITE(*,*) "Tyler: proc_obs_sort.F90, Calling 'read_observations'."
    CALL read_observations ( obs_filename , unit , obs , number_of_obs , & 
    total_number_of_obs , fatal_if_exceed_max_obs , print_out_obs_found , & 
 !BPR BEGIN
 !  height , pressure , iew , jns , levels , map_projection )
    height , pressure , slp_x , temperature , iew , jns , levels , map_projection )
+   WRITE(*,*) "Tyler: proc_obs_sort.F90, Returing from 'read_observations'."
 !BPR END
 
    !  There should be at least a single observation to make the rest of
@@ -71,12 +75,16 @@ height , iew , jns , map_projection , date , time , fdda_loop )
       !  (except for observations that are from the same "place").  This 
       !  puts duplicate location observations next to each other.
    
+      WRITE(*,*) "Tyler: proc_obs_sort.F90, Calling 'sort_obs'."
       CALL sort_obs ( obs , number_of_obs , index1 ) 
+      WRITE(*,*) "Tyler: proc_obs_sort.F90, Returing from 'sort_obs'."
    
       !  Merge the observations to (try to) remove all duplicates and
       !  build composite data.
    
+      WRITE(*,*) "Tyler: proc_obs_sort.F90, Calling 'check_duplicate_ob'."
       CALL check_duplicate_ob ( obs , index1 , number_of_obs , total_dups , date , time ) 
+      WRITE(*,*) "Tyler: proc_obs_sort.F90, Returing from 'check_duplicate_ob'."
    
       !  The final stage of this procedure is to vertically interpolate 
       !  any missing levels that the analysis would like to have available
@@ -172,4 +180,5 @@ height , iew , jns , map_projection , date , time , fdda_loop )
       CALL error_handler ( error_number , error_message , fatal , listing )
    END IF
 
+   WRITE(*,*) "Tyler: proc_obs_sort.F90, Bottom of subroutine."
 END SUBROUTINE proc_obs_sort
