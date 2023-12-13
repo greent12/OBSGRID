@@ -29,7 +29,7 @@ SUBROUTINE proc_qc ( iew , jns , kmax , number_of_obs , &
                      pressure , pres , date , time , dx , buddy_weight , &
 !BPR END
                      obs , index , max_number_of_obs , &
-                     t , u , v , h , rh , slp_x , sst , tobbox , odis )
+                     t , u , v , h , rh , slp_x , sst , tobbox , odis, ds )
    USE observation
    INTEGER , INTENT ( IN )                    :: iew, jns, kmax ,    &
                                                  number_of_obs ,     &
@@ -90,4 +90,5 @@ SUBROUTINE proc_qc ( iew , jns , kmax , number_of_obs , &
                                       sst          , &
                                       tobbox       , &
                                       odis
+   INTEGER, INTENT(IN)                :: ds
 END SUBROUTINE proc_qc

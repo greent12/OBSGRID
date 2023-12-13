@@ -5,6 +5,9 @@ request_level , date , time , request_p_diff , request_qc_max , total_numobs , &
 request_numobs , obs , &
 iew_alloc , jns_alloc , kbu_alloc , &
 total_dups , map_projection , &
+!Tyler BEGIN
+ds,&
+!Tyler END
 get_value , get_x_location , get_y_location , get_longitude , &
 get_array_index , get_over_water , get_id , get_qc_info , &
 !BPR BEGIN
@@ -47,6 +50,9 @@ put_value , put_array_index , put_qc_info )
                                                          kbu_alloc , &
                                                          total_dups , &
                                                          map_projection
+   !Tyler BEGIN
+   INTEGER,INTENT(IN)                                    :: ds
+   !Tyler END
 
    !  Optional arguments for retrieving data.
 
@@ -187,13 +193,13 @@ put_value , put_array_index , put_qc_info )
 
             !  See if the next report in the array satifies the requested
             !  criteria.  
-
-            CALL query_ob ( obs(loop_index) , date , time , &
+            !Tyler - added in 'ds' as an argument
+            CALL query_ob ( obs(loop_index) , date , time , ds, &
             request_variable , request_level , request_qc_max , request_p_diff , &
 !BPR BEGIN
 !           value , qc )
             value , qc , fg_3d_h = get_fg_3d_h, fg_3d_t = get_fg_3d_t )
-!BPR END
+!BPR EN
 
             !  If qc is returned .NE. to missing, then this routine found a 
             !  valid observation.
@@ -304,8 +310,8 @@ put_value , put_array_index , put_qc_info )
 
             !  See if the next report in the array satifies the requested
             !  criteria.  
-
-            CALL query_ob ( obs(loop_index) , date , time , &
+            !Tyler - added in 'ds' as an argument
+            CALL query_ob ( obs(loop_index) , date , time , ds, &
             request_variable , request_level , request_qc_max , request_p_diff , &
             value , qc )
 

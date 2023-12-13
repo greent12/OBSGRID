@@ -77,7 +77,8 @@
    NAMELIST /record7/ use_first_guess              , &
                       f4d                          , &
                       intf4d                       , &
-                      lagtem
+                      lagtem                       , &
+                      time_window
 
    !  Record 8 NAMELIST variables.
 

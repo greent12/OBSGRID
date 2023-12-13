@@ -2,7 +2,7 @@ SUBROUTINE proc_ob_access ( request_type , request_variable , print_found_obs , 
 request_level , date , time , request_p_diff , request_qc_max , total_numobs , &
 request_numobs , obs , &
 iew_alloc , jns_alloc , kbu_alloc , &
-total_dups , map_projection , &
+total_dups , map_projection , ds, &
 get_value , get_x_location , get_y_location , get_longitude , &
 get_array_index , get_over_water , get_id , get_qc_info , &
 !BPR BEGIN
@@ -43,5 +43,5 @@ put_value , put_array_index , put_qc_info )
    REAL                    , OPTIONAL , DIMENSION (:) :: put_value
    INTEGER                 , OPTIONAL , DIMENSION (:) :: put_array_index , &
                                                          put_qc_info
-
+   INTEGER, INTENT(IN)                                   :: ds
 END SUBROUTINE proc_ob_access

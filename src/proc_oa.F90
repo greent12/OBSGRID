@@ -26,9 +26,11 @@ oa_min_switch            , oa_3D_option             , &
 !BPR BEGIN
 !grid_id )
 grid_id, terrain, h, scale_cressman_rh_decreases, radius_influence_sfc_mult, &
-oa_psfc, max_p_tolerance_one_lev_oa )
+oa_psfc, max_p_tolerance_one_lev_oa, &
 !BPR END
-
+!Tyler BEGIN
+ds )
+!Tyler END
 !  This routine is a driver routine for objective analysis.
 
    USE obj_analysis
@@ -157,6 +159,9 @@ oa_psfc, max_p_tolerance_one_lev_oa )
    !Default is 1
    INTEGER                                    :: request_p_diff
 
+   !Tyler
+   INTEGER, INTENT(IN)                           :: ds
+
    !If the user wants to allow a tolerance between an obs pressure and the
    !pressure level it can be used for an objective anlysis on, then use the user-specified tolerance.
    !If not, then use a tolerance of 1 Pa, which is effectively no tolerance.
@@ -283,6 +288,9 @@ oa_psfc, max_p_tolerance_one_lev_oa )
          num_obs_found , num_obs_pass , obs , &
          iew_alloc , jns_alloc , kbu_alloc , &
          total_dups , map_projection , &
+         !Tyler BEGIN
+         ds,&
+         !Tyler END 
          get_value=obs_value , get_x_location=xob , get_y_location=yob , &
          get_id=station_id , get_array_index = array_index , get_qc_info = qc_flag ) 
          IF ( num_obs_pass .LT. mqd_minimum_num_obs ) THEN
@@ -430,6 +438,9 @@ oa_psfc, max_p_tolerance_one_lev_oa )
          num_obs_found , num_obs_pass , obs , &
          iew_alloc , jns_alloc , kbu_alloc , &
          total_dups , map_projection , &
+         !Tyler BEGIN
+         ds,&
+         !Tyler END
          get_value=obs_value , get_x_location=xob , get_y_location=yob , &
          get_id=station_id , get_array_index = array_index , get_qc_info = qc_flag )
 
@@ -463,6 +474,9 @@ oa_psfc, max_p_tolerance_one_lev_oa )
          num_obs_found , num_obs_pass , obs , &
          iew_alloc , jns_alloc , kbu_alloc , &
          total_dups , map_projection , &
+         !Tyler BEGIN
+         ds,&
+         !Tyler END
          get_value=obs_value , get_x_location=xob , get_y_location=yob , &
          get_id=station_id , get_array_index = array_index , get_qc_info = qc_flag ) 
 

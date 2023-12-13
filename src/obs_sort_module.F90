@@ -645,16 +645,12 @@ SUBROUTINE check_duplicate_ob ( obs , index , num_obs , total_dups , date , time
 ! foo
 !        IF ( .NOT. ( obs(first)%location .EQ. obs(second)%location ) ) THEN
          IF ( .NOT. loc_eq ( obs(first)%location , obs(second)%location ) ) THEN
-            WRITE(*,*) "Tyler: obs_sort_module.F90, observation locations are &
-                        not equal...cycling obsloop"
             CYCLE obsloop
          END IF
 
          !  If this obs has been merged with another obs or discarded, skip it.
 
          IF ( obs(second)%info%discard ) THEN
-            WRITE(*,*) "Tyler: obs_sort_module.F90, observation has discard &
-                        flag set to True, cycling compare"
             CYCLE compare
          END IF
 

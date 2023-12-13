@@ -92,6 +92,7 @@ MODULE namelist
                                  lagtem                           ! T/F use lagged time for off-time first guess
 
       INTEGER                 :: intf4d                           ! time (s) between sfc FDDA time periods
+      INTEGER                 :: time_window                      !Time window for sfc FDDA
    END TYPE nml_record_7
 
    TYPE nml_record_8
@@ -983,6 +984,7 @@ SUBROUTINE store_namelist ( nml )
    nml%record_7%f4d                      = f4d
    nml%record_7%intf4d                   = intf4d
    nml%record_7%lagtem                   = lagtem
+   nml%record_7%time_window              = time_window
 
    !  Record 8 NAMELIST values:
 

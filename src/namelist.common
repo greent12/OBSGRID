@@ -82,7 +82,8 @@
                            f4d                          , &
                            lagtem
 
-   COMMON   /record7_nmli/ intf4d
+   COMMON   /record7_nmli/ intf4d                       , &
+                           time_window
 
    !  Record 8 NAMELIST variables.
 

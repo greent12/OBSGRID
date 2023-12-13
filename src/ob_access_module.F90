@@ -8,7 +8,7 @@ USE get_fg_at_point
 CONTAINS
 
 !------------------------------------------------------------------------------
-SUBROUTINE query_ob ( obs , date , time , &
+SUBROUTINE query_ob ( obs , date , time , ds, &
 request_variable , request_level , request_qc_max , request_p_diff , &
 !BPR BEGIN
 !value , qc )
@@ -39,7 +39,7 @@ value , qc , fg_3d_t , fg_3d_h )
 
    REAL                    :: r
    LOGICAL                 :: not_missing
-   INTEGER                 :: ds , time_error
+   INTEGER                 :: time_error
    CHARACTER (LEN=19)      :: obs_date , analysis_date , analysis_p1_date , analysis_m1_date
    LOGICAL                 :: close
 
@@ -56,6 +56,10 @@ value , qc , fg_3d_t , fg_3d_h )
    REAL                    :: elevation_value
    INCLUDE 'constants.inc'
 !BPR END
+
+!Tyler BEGIN - Make the time widndow a variable, not hardcoded
+   INTEGER, INTENT(IN)        :: ds
+!Tyler END
 
    INCLUDE 'error.inc'
    INCLUDE 'missing.inc'
@@ -87,28 +91,30 @@ value , qc , fg_3d_t , fg_3d_h )
    ( time - ( time / 10000 ) * 10000 ) / 100, &
    time - ( time / 100 ) * 100
 
-   IF ( obs%info%platform(36:39) .EQ. '    ' ) THEN
-      IF ( ( obs%info%platform( 1:11) .EQ. 'FM-97 AIREP'     ) .OR. &
-           ( obs%info%platform( 1:15) .EQ. 'FM-36 TEMP SHIP' ) .OR. &
-           ( obs%info%platform( 1:10) .EQ. 'FM-35 TEMP'      ) .OR. &
-           ( obs%info%platform( 1:11) .EQ. 'FM-88 SATOB'     ) ) THEN
-         ds = 3600
-      ELSE
-         ds = 1800
-      END IF
-   ELSE
-      READ (obs%info%platform(36:39),IOSTAT=time_error,FMT='(I4)') ds
-      IF ( time_error .NE. 0 ) THEN
-         IF ( ( obs%info%platform( 1:11) .EQ. 'FM-97 AIREP'     ) .OR. &
-              ( obs%info%platform( 1:15) .EQ. 'FM-36 TEMP SHIP' ) .OR. &
-              ( obs%info%platform( 1:10) .EQ. 'FM-35 TEMP'      ) .OR. &
-              ( obs%info%platform( 1:11) .EQ. 'FM-88 SATOB'     ) ) THEN
-            ds = 3600
-         ELSE
-            ds = 1800
-         END IF
-      END IF
-   END IF
+!Tyler - commenting this decision out for time window, it is now passed into
+!routine
+!   IF ( obs%info%platform(36:39) .EQ. '    ' ) THEN
+!      IF ( ( obs%info%platform( 1:11) .EQ. 'FM-97 AIREP'     ) .OR. &
+!           ( obs%info%platform( 1:15) .EQ. 'FM-36 TEMP SHIP' ) .OR. &
+!           ( obs%info%platform( 1:10) .EQ. 'FM-35 TEMP'      ) .OR. &
+!           ( obs%info%platform( 1:11) .EQ. 'FM-88 SATOB'     ) ) THEN
+!         ds = 3600
+!      ELSE
+!         ds = 1800
+!      END IF
+!   ELSE
+!      READ (obs%info%platform(36:39),IOSTAT=time_error,FMT='(I4)') ds
+!      IF ( time_error .NE. 0 ) THEN
+!         IF ( ( obs%info%platform( 1:11) .EQ. 'FM-97 AIREP'     ) .OR. &
+!              ( obs%info%platform( 1:15) .EQ. 'FM-36 TEMP SHIP' ) .OR. &
+!              ( obs%info%platform( 1:10) .EQ. 'FM-35 TEMP'      ) .OR. &
+!              ( obs%info%platform( 1:11) .EQ. 'FM-88 SATOB'     ) ) THEN
+!            ds = 3600
+!         ELSE
+!            ds = 1800
+!         END IF
+!      END IF
+!   END IF
 
    CALL geth_newdate ( analysis_p1_date , analysis_date ,    ds ) 
    CALL geth_newdate ( analysis_m1_date , analysis_date , -1*ds )

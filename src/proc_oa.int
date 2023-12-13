@@ -22,7 +22,7 @@ oa_min_switch            , oa_3D_option             , &
 !BPR BEGIN
 !grid_id )
 grid_id, terrain, h, scale_cressman_rh_decreases, radius_influence_sfc_mult, &
-oa_psfc, max_p_tolerance_one_lev_oa )
+oa_psfc, max_p_tolerance_one_lev_oa , ds)
 !BPR END
 
    USE observation
@@ -79,5 +79,5 @@ oa_psfc, max_p_tolerance_one_lev_oa )
    TYPE (report) , DIMENSION ( total_numobs )         :: obs
    REAL , INTENT(IN)                                  :: dxd                , &
                                                          lat_center
-
+   INTEGER, INTENT(IN)                                :: ds
 END SUBROUTINE proc_oa

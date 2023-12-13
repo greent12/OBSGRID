@@ -420,9 +420,9 @@ pressure(:kbu_alloc) = pressure(:kbu_alloc) * 100.
             nml%record_4%max_p_extend_t           , nml%record_4%max_p_extend_w , &
             h , iew_alloc , jns_alloc , map_projection , fdda_date_8 , fdda_time_6 , fdda_loop )  
          END IF
-         
+        
          !  Run the quality control (QC) procedures on the observations.
-      
+
          IF ( ( .NOT. nml%record_7%f4d ) .OR. & 
               ( (     nml%record_7%f4d ) .AND. ( fdda_loop .EQ. 1 ) ) ) THEN 
             CALL proc_qc ( iew_alloc , jns_alloc , kbu_alloc , number_of_obs , &
@@ -456,7 +456,10 @@ pressure(:kbu_alloc) = pressure(:kbu_alloc) * 100.
             pressure , pres , current_date_8 , current_time_6 , dxd , 1. , &
             !BPR END
             obs , index , nml%record_3%max_number_of_obs , &
-            t , u , v , h , rh , slp_x , sst , tobbox , odis )
+            t , u , v , h , rh , slp_x , sst , tobbox , odis ,&
+            !Tyler BEGIN
+            nml%record_7%time_window )
+            !Tyler END
          ELSE
             CALL proc_qc ( iew_alloc , jns_alloc , kbu_alloc , number_of_obs , &
             total_dups , map_projection , &
@@ -489,9 +492,12 @@ pressure(:kbu_alloc) = pressure(:kbu_alloc) * 100.
             pressure , pres , fdda_date_8 , fdda_time_6 , dxd , 1. , &
             !BPR END
             obs , index , nml%record_3%max_number_of_obs , &
-            t , u , v , h , rh , slp_x , sst , tobbox , odis )
+            t , u , v , h , rh , slp_x , sst , tobbox , odis, &
+            !Tyler BEGIN
+            nml%record_7%time_window)
+            !Tyler END
          END IF
-      
+
          !  After the QC process, the observations are available for output
          !  in a similar fashion to the non-QC'ed data.  The differences
          !  between this file, "qc_out", and "useful_out" are the QC flags
@@ -551,8 +557,11 @@ pressure(:kbu_alloc) = pressure(:kbu_alloc) * 100.
             !nml%record_2%grid_id )
             nml%record_2%grid_id , terrain, h, nml%record_9%scale_cressman_rh_decreases   , &
             nml%record_9%radius_influence_sfc_mult, nml%record_9%oa_psfc                  , &
-            nml%record_9%max_p_tolerance_one_lev_oa )
+            nml%record_9%max_p_tolerance_one_lev_oa                                       , &
             !BPR END
+            !Tyler BEGIN
+            nml%record_7%time_window)
+            !Tyler END
 
             !  Store the final analysis back into the all_3d and all_2d arrays if we are doing
             !  SFC FDDA.  Why?  So that when we do the LAGTEM or temporal interpolation, we are
@@ -591,8 +600,11 @@ pressure(:kbu_alloc) = pressure(:kbu_alloc) * 100.
             !nml%record_2%grid_id )
             nml%record_2%grid_id , terrain, h, nml%record_9%scale_cressman_rh_decreases   , &
             nml%record_9%radius_influence_sfc_mult, nml%record_9%oa_psfc                  , &
-            nml%record_9%max_p_tolerance_one_lev_oa )
+            nml%record_9%max_p_tolerance_one_lev_oa                                       , &
             !BPR END
+            !Tyler BEGIN
+            nml%record_7%time_window)
+            !Tyler END
          END IF
 
       END IF
@@ -778,6 +790,7 @@ pressure(:kbu_alloc) = pressure(:kbu_alloc) * 100.
         !BPR END
 
       ENDIF
+
 
       IF ( fdda_loop.EQ.1) THEN
         obs_file_count = (icount-1)*2 + 1

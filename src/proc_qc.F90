@@ -30,7 +30,10 @@ SUBROUTINE proc_qc ( iew_alloc , jns_alloc , kbu_alloc , number_of_obs , &
                      pressure , pres, date , time , dx , buddy_weight , &
 !BPR END
                      obs , index , max_number_of_obs , & 
-                     t , u , v , h , rh , slp_x , sst , tobbox , odis )
+                     t , u , v , h , rh , slp_x , sst , tobbox , odis, &
+!Tyler BEGIN
+                     ds)
+!Tyler END
 
 ! Driver routine for QC
 !   
@@ -175,6 +178,9 @@ SUBROUTINE proc_qc ( iew_alloc , jns_alloc , kbu_alloc , number_of_obs , &
    !Default is 1
    INTEGER                                    :: request_p_diff
    !BPR END
+   !Tyler BEGIN
+   INTEGER, INTENT(IN)                           :: ds
+   !TYLER END
    !BPR BEGIN
    INCLUDE 'constants.inc'   
    !BPR END
@@ -330,6 +336,9 @@ SUBROUTINE proc_qc ( iew_alloc , jns_alloc , kbu_alloc , number_of_obs , &
             !BPR END
             iew_alloc , jns_alloc , kbu_alloc , &
             total_dups , map_projection , &
+            !Tyler BEGIN
+            ds,&
+            !Tyler END
             get_value=obs_value , get_x_location=xob , get_y_location=yob , &
             get_longitude=lonob , get_array_index=index_criteria , &
             !BPR BEGIN
@@ -401,6 +410,9 @@ SUBROUTINE proc_qc ( iew_alloc , jns_alloc , kbu_alloc , number_of_obs , &
             !BPR END
             iew_alloc , jns_alloc , kbu_alloc , &
             total_dups , map_projection , &
+            !Tyler BEGIN
+            ds,&
+            !Tyler END
             put_value=obs_value , put_array_index=index_criteria , put_qc_info=qc_flag )
    
          END DO variable_loop

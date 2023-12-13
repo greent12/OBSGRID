@@ -81,7 +81,8 @@
                               f4d                          , &
                               lagtem
 
-   INTEGER                 :: intf4d
+   INTEGER                 :: intf4d                       , &
+                              time_window
 
    !  Record 8 NAMELIST variables.
 
